@@ -19,45 +19,17 @@ class Migration_Install_news extends Migration {
             $this->db->query("INSERT INTO {$prefix}role_permissions VALUES(1,".$this->db->insert_id().")");
         }
 		// News Articles
-		$this->dbforge->add_field('`id` int(11) NOT NULL AUTO_INCREMENT');
-		$this->dbforge->add_field("`author` int(11) NOT NULL DEFAULT '-1'");
-		$this->dbforge->add_field('`title` varchar(255) NOT NULL');
-		$this->dbforge->add_field("`date` int(11) DEFAULT NULL");
-		$this->dbforge->add_field('`body` longtext');
-		$this->dbforge->add_field('`attachment` varchar(1000) NOT NULL');
-		$this->dbforge->add_field('`image_align` varchar(255) NOT NULL');
-		$this->dbforge->add_field('`image_caption` varchar(255) NOT NULL');
-		$this->dbforge->add_field('`tags` varchar(255) NOT NULL');
-		
-		$this->dbforge->add_field("`created_on` int(11) NOT NULL DEFAULT '0'");
-		$this->dbforge->add_field("`created_by` int(11) NOT NULL DEFAULT '-1'");
-		$this->dbforge->add_field("`modified_on` int(11) NOT NULL DEFAULT '0'");
-		$this->dbforge->add_field("`modified_by` int(11) NOT NULL DEFAULT '-1'");
- 
-		$this->dbforge->add_field("`status_id` tinyint(1) NOT NULL DEFAULT '0'");
-		$this->dbforge->add_field("`category_id` tinyint(1) NOT NULL DEFAULT '0'");
-		$this->dbforge->add_field("`date_published` int(11) DEFAULT NULL");
-		$this->dbforge->add_field("`deleted` tinyint(1) NOT NULL DEFAULT '0'");
+                $sql = "CREATE TABLE `bf_news_articles` ( `id` int(11) NOT NULL AUTO_INCREMENT, `author` int(11) NOT NULL DEFAULT '-1', `title` varchar(255) NOT NULL, `date` int(11) DEFAULT NULL, `body` longtext, `attachment` varchar(1000) NOT NULL, `image_align` varchar(255) NOT NULL, `image_caption` varchar(255) NOT NULL, `tags` varchar(255) NOT NULL, `created_on` int(11) NOT NULL DEFAULT '0', `created_by` int(11) NOT NULL DEFAULT '-1', `modified_on` int(11) NOT NULL DEFAULT '0', `modified_by` int(11) NOT NULL DEFAULT '-1', `status_id` tinyint(1) NOT NULL DEFAULT '0', `category_id` tinyint(1) NOT NULL DEFAULT '0', `date_published` int(11) DEFAULT NULL, `deleted` tinyint(1) NOT NULL DEFAULT '0' , primary key (id) ) DEFAULT CHARACTER SET = utf8 COLLATE = utf8_general_ci";
+		$this->db->query($sql);
 
-		$this->dbforge->add_key('id', true);
-		$this->dbforge->create_table('news_articles');
-
-		// Categories
-		$this->dbforge->add_field('`id` int(11) NOT NULL AUTO_INCREMENT');
-		$this->dbforge->add_field("`category` varchar(50) NOT NULL");
-		$this->dbforge->add_field("`default` tinyint(1) NOT NULL DEFAULT '0'");
-		$this->dbforge->add_key('id', true);
-		$this->dbforge->create_table('news_categories');
-			
+                $sql = "CREATE TABLE `bf_news_categories` ( `id` int(11) NOT NULL AUTO_INCREMENT, `category` varchar(50) NOT NULL, `default` tinyint(1) NOT NULL DEFAULT '0' , primary key (id) ) DEFAULT CHARACTER SET = utf8 COLLATE = utf8_general_ci";
+		$this->db->query($sql);
+                
+                $sql = "CREATE TABLE `bf_news_status` ( `id` int(11) NOT NULL AUTO_INCREMENT, `status` varchar(50) NOT NULL, `default` tinyint(1) NOT NULL DEFAULT '0' , primary key (id) ) DEFAULT CHARACTER SET = utf8 COLLATE = utf8_general_ci";
+		$this->db->query($sql);
+                
 		$this->db->query("INSERT INTO {$prefix}news_categories VALUES(-1, 'Unknown', 0)");
 		$this->db->query("INSERT INTO {$prefix}news_categories VALUES(1, 'Default', 1)");
-		
-		// Status
-		$this->dbforge->add_field('`id` int(11) NOT NULL AUTO_INCREMENT');
-		$this->dbforge->add_field("`status` varchar(50) NOT NULL");
-		$this->dbforge->add_field("`default` tinyint(1) NOT NULL DEFAULT '0'");
-		$this->dbforge->add_key('id', true);
-		$this->dbforge->create_table('news_status');
 			
 		$this->db->query("INSERT INTO {$prefix}news_status VALUES(-1, 'Unknown', 0)");
 		$this->db->query("INSERT INTO {$prefix}news_status VALUES(1, 'Draft', 1)");
